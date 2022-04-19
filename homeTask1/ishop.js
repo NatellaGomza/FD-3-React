@@ -12,12 +12,14 @@ var IShop = React.createClass({
 
     var tableCaption = React.DOM.caption({ className: 'header' }, this.props.header);
 
-    var tableHeader = React.DOM.tr({ className: 'tableHeader' },
+    var heading = React.DOM.tr({ className: 'tableHeader' },
       React.DOM.td({}, 'Name of product'),
       React.DOM.td({}, 'Price, y.e'),
       React.DOM.td({}, 'Photo'),
       React.DOM.td({}, 'Available ammount'),
     );
+
+    var tableHeader = React.DOM.thead({}, heading);
 
     var productsCode = this.props.products.map(el =>
       React.DOM.tr({ key: el.code, className: 'productsTable' },
@@ -26,10 +28,12 @@ var IShop = React.createClass({
         React.DOM.td({ className: 'photo' }, React.DOM.img({ src: el.urlPhoto })),
         React.DOM.td({ className: 'availableAmmount' }, el.availableAmmount),
       )
-    );
+    );  
+
+    var productsTable = React.DOM.tbody({}, productsCode);
 
     return React.DOM.div({ className: 'IShop' },
-      React.DOM.table({ className: 'table' }, tableCaption, tableHeader, productsCode),
+      React.DOM.table({ className: 'table' }, tableCaption, tableHeader, productsTable),
     );
   },
 });
