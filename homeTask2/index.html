@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title> Filter </title>
+</head>
+
+<body>
+  <div id="container"></div>
+
+  <script src="https://unpkg.com/react@15/dist/react.js"></script>
+  <script src="https://unpkg.com/react-dom@15/dist/react-dom.js"></script>
+
+  <script src="FilterBlock.js"></script>
+  <link rel="stylesheet" type="text/css" href="filter.css" />
+
+  <script>
+
+    var filterArr = [
+      { text: 'california', code: 1},
+      { text: 'everything', code: 2},
+      { text: 'aboveboard', code: 3},
+      { text: 'washington', code: 4},
+      { text: 'basketball', code: 5},
+      { text: 'weathering', code: 6},
+      { text: 'characters', code: 7},
+      { text: 'literature', code: 8},
+      { text: 'contraband', code: 9},
+      { text: 'appreciate', code: 10},      
+    ];
+
+    ReactDOM.render(
+      React.createElement(FilterBlock,{filter:filterArr}), 
+      document.getElementById('container') 
+    );
+
+  </script>
+
+</body>
+
+</html>
