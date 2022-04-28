@@ -56,31 +56,17 @@ var IShop = React.createClass({
   },
 
   deleteItem: function (code) {
-    console.log(code)
-    var initList = this.props.products.map(el =>
-      React.createElement(Products, {
-        key: el.code,
-        code: el.code,
-        name: el.name,
-        price: el.price,
-        photo: el.urlPhoto,
-        availableAmmount: el.availableAmmount,
-        cbSelected: this.selectItem,
-        cbDelete: this.deleteItem,
-        selectedItemCode: null,
-      })
-    )
-
-    var deletedItem = initList.filter(el => {
-      console.log(el)
-      el.key == code
+    var arr = [];
+    var initList = this.state.productsList.map(el => {
+      
+      if (code == el.key) {
+        console.log(1)
+        return {...el};
+      }
+      console.log(el);
+      return arr.push(el);
     })
-    console.log(initList);
-
-    this.setState({
-      productsList: deletedItem,
-    });
-    console.log(deletedItem);
+    this.setState({ productsList: arr });
   },
 
   render: function () {
