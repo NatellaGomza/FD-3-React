@@ -56,17 +56,16 @@ var IShop = React.createClass({
   },
 
   deleteItem: function (code) {
-    var arr = [];
+    var itemList = [];
     var initList = this.state.productsList.map(el => {
-      
       if (code == el.key) {
-        console.log(1)
         return {...el};
       }
-      console.log(el);
-      return arr.push(el);
+
+      return itemList.push(el);
     })
-    this.setState({ productsList: arr });
+    
+    this.setState({ productsList: itemList });
   },
 
   render: function () {

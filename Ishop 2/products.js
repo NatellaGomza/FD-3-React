@@ -15,6 +15,7 @@ var Products = React.createClass({
 
   productChoosen: function (event) {
     if (event.target.value !== 'Delete') {
+      console.log(1);
     this.props.cbSelected(this.props.code);
     }
   },
