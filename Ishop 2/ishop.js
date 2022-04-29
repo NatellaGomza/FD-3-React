@@ -16,19 +16,15 @@ var IShop = React.createClass({
   },
 
   getInitialState: function () {
-    var initProductList = this.props.products.map(el =>
-      React.createElement(Products, {
-        key: el.code,
-        code: el.code,
-        name: el.name,
-        price: el.price,
-        photo: el.urlPhoto,
-        availableAmmount: el.availableAmmount,
-        cbSelected: this.selectItem,
-        cbDelete: this.deleteItem,
-        selectedItemCode: null,
-      })
-    )
+    var initProductList = this.props.products.map((el) => {
+      let item = Object.assign({}, el);
+      item.cbSelected = this.selectItem;
+      console.log(this);
+      item.cbDelete = this.deleteItem;
+      item.selectedItemCode = null;
+
+      return item;
+    });
 
     return {
       productsList: initProductList,
@@ -36,36 +32,31 @@ var IShop = React.createClass({
   },
 
   selectItem: function (code) {
-    var productListSelected = this.props.products.map(el =>
-      React.createElement(Products, {
-        key: el.code,
-        code: el.code,
-        name: el.name,
-        price: el.price,
-        photo: el.urlPhoto,
-        availableAmmount: el.availableAmmount,
-        cbSelected: this.selectItem,
-        cbDelete: this.deleteItem,
-        selectedItemCode: code,
-      })
-    );
+    var selectedItemList = this.state.productsList.map(function (el) {
+      let item = Object.assign({}, el);
+      item.selectedItemCode = code;
 
-    this.setState({
-      productsList: productListSelected,
+      return item;
     });
+
+    this.setState({ productsList: selectedItemList });
   },
 
   deleteItem: function (code) {
-    var itemList = [];
-    var initList = this.state.productsList.map(el => {
-      if (code == el.key) {
-        return {...el};
-      }
+    console.log(this.state.productsList);
+    var question = confirm('Are you sure?');
+    if (question) {
+      var itemList = [];
+      var initList = this.state.productsList.map(el => {
+        if (code == el.code) {
+          return { ...el };
+        }
 
-      return itemList.push(el);
-    })
-    
-    this.setState({ productsList: itemList });
+        return itemList.push(el);
+      })
+      console.log(itemList);
+      this.setState({ productsList: itemList });
+    }
   },
 
   render: function () {
@@ -82,7 +73,21 @@ var IShop = React.createClass({
 
     var tableHeader = React.DOM.thead({}, heading);
 
-    var productsTable = React.DOM.tbody({}, this.state.productsList);
+    var initProductList = this.state.productsList.map(el =>
+      React.createElement(Products, {
+        key: el.code,
+        code: el.code,
+        name: el.name,
+        price: el.price,
+        photo: el.urlPhoto,
+        availableAmmount: el.availableAmmount,
+        cbSelected: el.cbSelected,
+        cbDelete: el.cbDelete,
+        selectedItemCode: el.selectedItemCode,
+      })
+    )
+
+    var productsTable = React.DOM.tbody({}, initProductList);
 
     return React.DOM.div({ className: 'IShop' },
       React.DOM.table({ className: 'table' }, tableCaption, tableHeader, productsTable),
