@@ -1,3 +1,5 @@
+import React from 'react';
+
 var Products = React.createClass({
 
   displayName: 'Products',
@@ -38,3 +40,5 @@ var Products = React.createClass({
     );
   },
 });
+
+export default Products;
