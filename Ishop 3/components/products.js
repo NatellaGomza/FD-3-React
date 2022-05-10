@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import './ishop.css';
+
 class Products extends React.Component {
 
   static propTypes = {
@@ -9,13 +11,14 @@ class Products extends React.Component {
     price: PropTypes.number.isRequired,
     photo: PropTypes.string.isRequired,
     availableAmmount: PropTypes.number.isRequired,
-    cbSelected: PropTypes.func.isRequired,
-    cbDelete: PropTypes.func.isRequired,
-    selectedItemCode: PropTypes.number,
+    cbSelected: PropTypes.func,
+    cbDelete: PropTypes.func,
+    selectedItemCode: PropTypes.func,
   };
 
   productChoosen = (event) => {
     if (event.target.value !== 'Delete') {
+      console.log(this.props.code);
       this.props.cbSelected(this.props.code);
     }
   }

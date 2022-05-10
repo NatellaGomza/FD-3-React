@@ -26,7 +26,7 @@ class IShop extends React.Component {
       item.cbSelected = this.selectItem;
       item.cbDelete = this.deleteItem;
       item.selectedItemCode = null;
-console.log(this.props.products);
+
       return item;
     }),
   }
@@ -35,7 +35,7 @@ console.log(this.props.products);
     var selectedItemList = this.state.productsList.map(function (el) {
       let item = { ...el };
       item.selectedItemCode = code;
-
+      
       return item;
     });
 
@@ -66,14 +66,14 @@ console.log(this.props.products);
         price={el.price}
         photo={el.urlPhoto}
         availableAmmount={el.availableAmmount}
-        cbSelected={el.cbSelected}
-        cbDelete={el.cbDelete}
-        selectedItemCode={el.selectedItemCode}
+        cbSelected={this.selectItem}
+        cbDelete={this.deleteItem}
+        selectedItemCode={this.selectItem}
       />
     );
 
     return (
-      <div className='Ishop'>
+      <div className='IShop'>
         <table className='table'>
           <caption className='header'>{this.props.header}</caption>
           <thead>
