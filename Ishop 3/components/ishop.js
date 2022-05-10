@@ -25,21 +25,48 @@ class IShop extends React.Component {
       let item = { ...el };
       item.cbSelected = this.selectItem;
       item.cbDelete = this.deleteItem;
-      item.selectedItemCode = null;
-
+      item.selectedItemCode = this.selectItem;
+      item.color = {
+        backgroundColor:"white"
+      };
       return item;
     }),
+    
   }
 
   selectItem = (code) => {
-    var selectedItemList = this.state.productsList.map(function (el) {
-      let item = { ...el };
-      item.selectedItemCode = code;
-      
+
+    let selectedItemList = this.state.productsList.map(function (el) {
+      let item = [];
+      el.selectedItemCode = code;
+      item.push(el);
+
       return item;
     });
 
-    this.setState({ productsList: selectedItemList });
+    return this.setState({ productsList: selectedItemList }), this.changeColor(code);
+  }
+
+  changeColor = (code) =>{
+    let selectedItem = this.state.productsList.map(function (el) {
+      let item = { ...el };
+    
+      if (item.selectedItemCode === item.code) {
+        item.color = {
+          backgroundColor:"red",
+        }
+      } else {
+        item.color = {
+          backgroundColor:"white",
+        }
+      }
+
+      return item;
+    });
+
+    console.log(selectedItem );
+
+    this.setState({productsList: selectedItem })
   }
 
   deleteItem = (code) => {
@@ -50,7 +77,7 @@ class IShop extends React.Component {
         if (code == el.code) {
           return { ...el };
         }
-
+console.log(code);
         return itemList.push(el);
       })
       this.setState({ productsList: itemList });
@@ -68,7 +95,8 @@ class IShop extends React.Component {
         availableAmmount={el.availableAmmount}
         cbSelected={this.selectItem}
         cbDelete={this.deleteItem}
-        selectedItemCode={this.selectItem}
+        selectedItemCode={el.selectedItemCode}
+        color={el.color}
       />
     );
 

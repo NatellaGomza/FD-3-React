@@ -30596,19 +30596,44 @@ var IShop = function (_React$Component) {
         var item = _extends({}, el);
         item.cbSelected = _this.selectItem;
         item.cbDelete = _this.deleteItem;
-        item.selectedItemCode = null;
-
+        item.selectedItemCode = _this.selectItem;
+        item.color = {
+          backgroundColor: "white"
+        };
         return item;
       })
+
     }, _this.selectItem = function (code) {
+
       var selectedItemList = _this.state.productsList.map(function (el) {
-        var item = _extends({}, el);
-        item.selectedItemCode = code;
+        var item = [];
+        el.selectedItemCode = code;
+        item.push(el);
 
         return item;
       });
 
-      _this.setState({ productsList: selectedItemList });
+      return _this.setState({ productsList: selectedItemList }), _this.changeColor(code);
+    }, _this.changeColor = function (code) {
+      var selectedItem = _this.state.productsList.map(function (el) {
+        var item = _extends({}, el);
+
+        if (item.selectedItemCode === item.code) {
+          item.color = {
+            backgroundColor: "red"
+          };
+        } else {
+          item.color = {
+            backgroundColor: "white"
+          };
+        }
+
+        return item;
+      });
+
+      console.log(selectedItem);
+
+      _this.setState({ productsList: selectedItem });
     }, _this.deleteItem = function (code) {
       var question = confirm('Are you sure?');
       if (question) {
@@ -30617,7 +30642,7 @@ var IShop = function (_React$Component) {
           if (code == el.code) {
             return _extends({}, el);
           }
-
+          console.log(code);
           return itemList.push(el);
         });
         _this.setState({ productsList: itemList });
@@ -30639,7 +30664,8 @@ var IShop = function (_React$Component) {
           availableAmmount: el.availableAmmount,
           cbSelected: _this2.selectItem,
           cbDelete: _this2.deleteItem,
-          selectedItemCode: _this2.selectItem
+          selectedItemCode: el.selectedItemCode,
+          color: el.color
         });
       });
 
@@ -31773,9 +31799,9 @@ var Products = function (_React$Component) {
 
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Products.__proto__ || Object.getPrototypeOf(Products)).call.apply(_ref, [this].concat(args))), _this), _this.productChoosen = function (event) {
       if (event.target.value !== 'Delete') {
-        console.log(_this.props.code);
         _this.props.cbSelected(_this.props.code);
       }
+      console.log(_this.props.color);
     }, _this.productForDelete = function () {
       _this.props.cbDelete(_this.props.code);
     }, _temp), _possibleConstructorReturn(_this, _ret);
@@ -31786,7 +31812,7 @@ var Products = function (_React$Component) {
     value: function render() {
       return _react2.default.createElement(
         'tr',
-        { className: 'productsTable', onClick: this.productChoosen, backgroundcolor: this.props.selectedItemCode === this.props.code ? 'red' : 'white' },
+        { className: 'productsTable', onClick: this.productChoosen, style: this.props.color },
         _react2.default.createElement(
           'td',
           { className: 'name' },
@@ -31827,7 +31853,8 @@ Products.propTypes = {
   availableAmmount: _propTypes2.default.number.isRequired,
   cbSelected: _propTypes2.default.func,
   cbDelete: _propTypes2.default.func,
-  selectedItemCode: _propTypes2.default.func
+  selectedItemCode: _propTypes2.default.number,
+  color: _propTypes2.default.string.isRequired
 };
 ;
 
