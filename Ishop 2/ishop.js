@@ -1,8 +1,3 @@
-import React from 'react';
-
-import './ishop.css';
-import Products from './products';
-
 var IShop = React.createClass({
 
   displayName: 'IShop',
@@ -22,9 +17,9 @@ var IShop = React.createClass({
 
   getInitialState: function () {
     var initProductList = this.props.products.map((el) => {
-      let item = {...el};
+      let item = Object.assign({}, el);
       item.cbSelected = this.selectItem;
-      console.log(code);
+      console.log(this);
       item.cbDelete = this.deleteItem;
       item.selectedItemCode = null;
 
@@ -38,7 +33,7 @@ var IShop = React.createClass({
 
   selectItem: function (code) {
     var selectedItemList = this.state.productsList.map(function (el) {
-      let item = {...el};
+      let item = Object.assign({}, el);
       item.selectedItemCode = code;
 
       return item;
@@ -48,6 +43,7 @@ var IShop = React.createClass({
   },
 
   deleteItem: function (code) {
+    console.log(this.state.productsList);
     var question = confirm('Are you sure?');
     if (question) {
       var itemList = [];
@@ -58,6 +54,7 @@ var IShop = React.createClass({
 
         return itemList.push(el);
       })
+      console.log(itemList);
       this.setState({ productsList: itemList });
     }
   },
@@ -97,5 +94,3 @@ var IShop = React.createClass({
     );
   },
 });
-
-export default IShop;
