@@ -31,7 +31,7 @@ class Products extends React.Component {
 
   changeWorkMode = (event) => {
     if (event.target.value === 'Edit') {
-    this.props.cbWorkMode(this.props.code)
+    this.props.cbWorkMode(this.props.code);
     };
   }
 

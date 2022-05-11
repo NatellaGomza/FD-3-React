@@ -22,35 +22,38 @@ class IShop extends React.Component {
     startWorkMode: PropTypes.number.isRequired,
   };
 
-  state = {   
+  state = {
     productsList: this.props.products.map((el) => {
       let item = { ...el };
       item.cbSelected = this.selectItem;
       item.cbDelete = this.deleteItem;
       item.selectedItemCode = null;
+      item.itemToBeChanged = null;
       item.color = {
         backgroundColor: "white"
       };
       return item;
     }),
     workMode: this.props.startWorkMode,
-    cbWorkMode: () => { this.changeWorkMode},    
+    cbWorkMode: this.changeWorkMode,
   }
 
   selectItem = (code) => {
-
     let selectedItemList = this.state.productsList.map(function (el) {
-      let item = [];
+      let item = {...el};
       el.selectedItemCode = code;
-      item.push(el);
 
       return item;
     });
-
-    return this.setState({ productsList: selectedItemList }), this.changeColor(code);
+    
+    if (this.state.workMode === 1) {
+      return this.setState({ productsList: selectedItemList }), this.changeColor(code);
+    } else {
+      return this.setState({ productsList: selectedItemList })
+    }
   }
 
-  changeColor = (code) => {
+  changeColor = () => {
     let selectedItem = this.state.productsList.map(function (el) {
       let item = { ...el };
 
@@ -81,14 +84,19 @@ class IShop extends React.Component {
 
         return itemList.push(el);
       })
-      this.setState({ productsList: itemList});
+      this.setState({ productsList: itemList });
     }
   }
 
-  changeWorkMode = () => {
-     console.log(this.state.workMode)
-    this.setState({ workmode: 2 })
-    console.log(this.state.workMode)
+  changeWorkMode = (code) => {
+    let editedItemList = this.state.productsList.map(function (el) {
+      let item = {...el};
+      item.itemToBeChanged = code;
+      console.log(code);
+      return item;
+    });
+    console.log(editedItemList);
+    this.setState({ productsList: editedItemList, workMode: 2 });
   }
 
   render() {
@@ -109,18 +117,35 @@ class IShop extends React.Component {
       />
     );
 
-    var initProduct = this.state.productsList.map((el) => {
-      if (el.selectedItemCode === el.code) {
-        return <ProductCard key={el.code}
-          code={el.code}
-          name={el.name}
-          price={el.price}
-          photo={el.urlPhoto}
-          availableAmmount={el.availableAmmount}
-          workMode={this.state.workMode}
-        />
-      }
-    });
+    var initProduct;
+
+    if (this.state.workMode === 2) {
+      initProduct = this.state.productsList.map((el) => {
+        if (el.itemToBeChanged === el.code) {
+          return <ProductCard key={el.code}
+            code={el.code}
+            name={el.name}
+            price={el.price}
+            photo={el.urlPhoto}
+            availableAmmount={el.availableAmmount}
+            workMode={this.state.workMode}
+          />
+        }
+      })
+    } else {
+      initProduct = this.state.productsList.map((el) => {
+        if (el.selectedItemCode === el.code) {
+          return <ProductCard key={el.code}
+            code={el.code}
+            name={el.name}
+            price={el.price}
+            photo={el.urlPhoto}
+            availableAmmount={el.availableAmmount}
+            workMode={this.state.workMode}
+          />
+        }
+      });
+    }
 
     return (
       <div className='page'>

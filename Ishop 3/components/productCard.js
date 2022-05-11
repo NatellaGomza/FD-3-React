@@ -15,9 +15,33 @@ class ProductCard extends React.Component {
     };
 
     render() {
-        // if (this.props.workMode === 2) {
-        //     console.log('ok')
-        // } else {
+        if (this.props.workMode === 2) {
+            return (
+                <div className='editBlock'>
+                    <span> Edit Existing Product</span>
+                    <form method="post" id="form">
+                        <div>
+                            <span> Name </span>
+                            <input type="text" defaultValue={this.props.name} />
+                        </div>
+                        <div>
+                            <span> Price </span>
+                            <input type="text" defaultValue={this.props.price} />
+                        </div>
+                        <div>
+                            <span> URL </span>
+                            <input type="text" defaultValue={this.props.photo} />
+                        </div>
+                        <div>
+                            <span> Quantity </span>
+                            <input type="text" defaultValue={this.props.availableAmmount} />
+                        </div>
+                        <input type="submit" id="submit" value="Save" />
+                        <input type="submit" id="submit" value="Cancel" />
+                    </form>
+                </div>
+            );
+        } else {
             return (
                 <div className='productCard'>
                     <div className='productInfo'>
@@ -29,7 +53,7 @@ class ProductCard extends React.Component {
                 </div>
             );
         }
-    //}
+    }
 };
 
 export default ProductCard;
