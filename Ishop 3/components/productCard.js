@@ -12,32 +12,45 @@ class ProductCard extends React.Component {
         photo: PropTypes.string.isRequired,
         availableAmmount: PropTypes.number.isRequired,
         workMode: PropTypes.number.isRequired,
+        cbRefreshInfo: PropTypes.func,
     };
+
+    refreshInfo = (event) => {
+        event.preventDefault();
+
+        let name = event.target.name.value;
+        let price = +event.target.price.value;
+        let url = event.target.url.value;
+        let quantity = +event.target.quantity.value;
+
+        this.props.cbRefreshInfo(name, price, url, quantity, this.props.code)
+
+    }
 
     render() {
         if (this.props.workMode === 2) {
             return (
                 <div className='editBlock'>
                     <span> Edit Existing Product</span>
-                    <form method="post" id="form">
+                    <form method="post" id="form" onSubmit={this.refreshInfo}>
                         <div>
                             <span> Name </span>
-                            <input type="text" defaultValue={this.props.name} />
+                            <input type="text" name="name" defaultValue={this.props.name} onChange={this.itemChanged} />
                         </div>
                         <div>
                             <span> Price </span>
-                            <input type="text" defaultValue={this.props.price} />
+                            <input type="text" name="price" defaultValue={this.props.price} />
                         </div>
                         <div>
                             <span> URL </span>
-                            <input type="text" defaultValue={this.props.photo} />
+                            <input type="text" name="url" defaultValue={this.props.photo} />
                         </div>
                         <div>
                             <span> Quantity </span>
-                            <input type="text" defaultValue={this.props.availableAmmount} />
+                            <input type="text" name="quantity" defaultValue={this.props.availableAmmount} />
                         </div>
-                        <input type="submit" id="submit" value="Save" />
-                        <input type="submit" id="submit" value="Cancel" />
+                        <input type="submit" value="Save" />
+                        <input type="button" value="Cancel" />
                     </form>
                 </div>
             );

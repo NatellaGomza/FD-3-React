@@ -45,8 +45,8 @@ class Products extends React.Component {
         </td>
         <td className="availableAmmount">{this.props.availableAmmount}</td>
         <td className="button">
-          <input type="button" value="Edit" onClick={this.changeWorkMode}></input>
-          <input type="button" value="Delete" onClick={this.productForDelete}></input>
+          <input type="button" value="Edit" disabled = {this.props.workMode === 2} onClick={this.changeWorkMode}></input>
+          <input type="button" value="Delete" disabled = {this.props.workMode === 2} onClick={this.productForDelete}></input>
         </td>
       </tr>
     );

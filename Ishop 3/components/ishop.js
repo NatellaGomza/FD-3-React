@@ -40,12 +40,12 @@ class IShop extends React.Component {
 
   selectItem = (code) => {
     let selectedItemList = this.state.productsList.map(function (el) {
-      let item = {...el};
+      let item = { ...el };
       el.selectedItemCode = code;
 
       return item;
     });
-    
+
     if (this.state.workMode === 1) {
       return this.setState({ productsList: selectedItemList }), this.changeColor(code);
     } else {
@@ -90,7 +90,7 @@ class IShop extends React.Component {
 
   changeWorkMode = (code) => {
     let editedItemList = this.state.productsList.map(function (el) {
-      let item = {...el};
+      let item = { ...el };
       item.itemToBeChanged = code;
       if (item.itemToBeChanged === item.code) {
         item.color = {
@@ -106,6 +106,21 @@ class IShop extends React.Component {
     });
     console.log(editedItemList);
     this.setState({ productsList: editedItemList, workMode: 2 });
+  }
+
+  refreshInfo = (name, price, url, quantity, code) => {
+    let itemEditedName = this.state.productsList.map(function (el) {
+      let item = { ...el };
+      if (item.code === code) {
+        item.name = name;
+        item.price = price;
+        item.photo = url;
+        item.availableAmmount = quantity;
+      }
+
+      return item;
+    })
+    this.setState({ productsList: itemEditedName,  workMode: 1 })
   }
 
   render() {
@@ -138,6 +153,7 @@ class IShop extends React.Component {
             photo={el.urlPhoto}
             availableAmmount={el.availableAmmount}
             workMode={this.state.workMode}
+            cbRefreshInfo={this.refreshInfo}
           />
         }
       })
@@ -173,7 +189,7 @@ class IShop extends React.Component {
             <tbody>{initProductList}</tbody>
           </table>
         </div>
-        <div>  <input type="button" value="New Product" ></input> </div>
+        <div>  <input type="button" value="New Product" disabled={this.state.workMode === 2} ></input> </div>
         <div className='productCard'>{initProduct}</div>
       </div>
     );
