@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import './ishop.css';
 
 import Products from './products';
+import ProductCard from './productCard';
 
 class IShop extends React.Component {
 
@@ -18,20 +19,22 @@ class IShop extends React.Component {
         availableAmmount: PropTypes.number.isRequired,
       })
     ),
+    startWorkMode: PropTypes.number.isRequired,
   };
 
-  state = {
+  state = {   
     productsList: this.props.products.map((el) => {
       let item = { ...el };
       item.cbSelected = this.selectItem;
       item.cbDelete = this.deleteItem;
-      item.selectedItemCode = this.selectItem;
+      item.selectedItemCode = null;
       item.color = {
-        backgroundColor:"white"
+        backgroundColor: "white"
       };
       return item;
     }),
-    
+    workMode: this.props.startWorkMode,
+    cbWorkMode: () => { this.changeWorkMode},    
   }
 
   selectItem = (code) => {
@@ -47,26 +50,24 @@ class IShop extends React.Component {
     return this.setState({ productsList: selectedItemList }), this.changeColor(code);
   }
 
-  changeColor = (code) =>{
+  changeColor = (code) => {
     let selectedItem = this.state.productsList.map(function (el) {
       let item = { ...el };
-    
+
       if (item.selectedItemCode === item.code) {
         item.color = {
-          backgroundColor:"red",
+          backgroundColor: "red",
         }
       } else {
         item.color = {
-          backgroundColor:"white",
+          backgroundColor: "white",
         }
       }
 
       return item;
     });
 
-    console.log(selectedItem );
-
-    this.setState({productsList: selectedItem })
+    this.setState({ productsList: selectedItem })
   }
 
   deleteItem = (code) => {
@@ -77,11 +78,17 @@ class IShop extends React.Component {
         if (code == el.code) {
           return { ...el };
         }
-console.log(code);
+
         return itemList.push(el);
       })
-      this.setState({ productsList: itemList });
+      this.setState({ productsList: itemList});
     }
+  }
+
+  changeWorkMode = () => {
+     console.log(this.state.workMode)
+    this.setState({ workmode: 2 })
+    console.log(this.state.workMode)
   }
 
   render() {
@@ -97,24 +104,43 @@ console.log(code);
         cbDelete={this.deleteItem}
         selectedItemCode={el.selectedItemCode}
         color={el.color}
+        workMode={this.state.workMode}
+        cbWorkMode={this.changeWorkMode}
       />
     );
 
+    var initProduct = this.state.productsList.map((el) => {
+      if (el.selectedItemCode === el.code) {
+        return <ProductCard key={el.code}
+          code={el.code}
+          name={el.name}
+          price={el.price}
+          photo={el.urlPhoto}
+          availableAmmount={el.availableAmmount}
+          workMode={this.state.workMode}
+        />
+      }
+    });
+
     return (
-      <div className='IShop'>
-        <table className='table'>
-          <caption className='header'>{this.props.header}</caption>
-          <thead>
-            <tr className='tableHeader'>
-              <td>Name of product</td>
-              <td>Price, y.e</td>
-              <td>Photo</td>
-              <td>Quantity</td>
-              <td>Control</td>
-            </tr>
-          </thead>
-          <tbody>{initProductList}</tbody>
-        </table>
+      <div className='page'>
+        <div className='IShop'>
+          <table className='table'>
+            <caption className='header'>{this.props.header}</caption>
+            <thead>
+              <tr className='tableHeader'>
+                <td>Name of product</td>
+                <td>Price, y.e</td>
+                <td>Photo</td>
+                <td>Quantity</td>
+                <td>Control</td>
+              </tr>
+            </thead>
+            <tbody>{initProductList}</tbody>
+          </table>
+        </div>
+        <div>  <input type="button" value="New Product" ></input> </div>
+        <div className='productCard'>{initProduct}</div>
       </div>
     );
   }

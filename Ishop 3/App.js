@@ -10,6 +10,7 @@ ReactDOM.render(
   <IShop
   header={headerText}
   products={productsArr}
+  startWorkMode={1}
   />
   ,  document.getElementById('container')
 );

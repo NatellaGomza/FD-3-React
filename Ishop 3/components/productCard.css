@@ -1,0 +1,10 @@
+.productCard img {
+    width:150px;
+    height:150px;
+}
+
+.productInfo {
+    width:150px;
+    display:flex;
+    justify-content: space-around;
+}

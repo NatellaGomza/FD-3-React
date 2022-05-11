@@ -14,18 +14,25 @@ class Products extends React.Component {
     cbSelected: PropTypes.func,
     cbDelete: PropTypes.func,
     selectedItemCode: PropTypes.number,
-    color: PropTypes.string.isRequired,
+    color: PropTypes.object.isRequired,
+    workMode: PropTypes.number.isRequired,
+    cbWorkMode:  PropTypes.func,
   };
 
   productChoosen = (event) => {
-    if (event.target.value !== 'Delete') {
+    if (event.target.value !== 'Delete' && event.target.value !== 'Edit') {
       this.props.cbSelected(this.props.code);
     }
-    console.log(this.props.color);
   }
 
   productForDelete = () => {
     this.props.cbDelete(this.props.code);
+  }
+
+  changeWorkMode = (event) => {
+    if (event.target.value === 'Edit') {
+    this.props.cbWorkMode(this.props.code)
+    };
   }
 
   render() {
@@ -38,7 +45,9 @@ class Products extends React.Component {
         </td>
         <td className="availableAmmount">{this.props.availableAmmount}</td>
         <td className="button">
-          <input type="button" value="Delete" onClick={this.productForDelete}></input></td>
+          <input type="button" value="Edit" onClick={this.changeWorkMode}></input>
+          <input type="button" value="Delete" onClick={this.productForDelete}></input>
+        </td>
       </tr>
     );
   }
