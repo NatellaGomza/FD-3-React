@@ -92,6 +92,15 @@ class IShop extends React.Component {
     let editedItemList = this.state.productsList.map(function (el) {
       let item = {...el};
       item.itemToBeChanged = code;
+      if (item.itemToBeChanged === item.code) {
+        item.color = {
+          backgroundColor: "red",
+        }
+      } else {
+        item.color = {
+          backgroundColor: "white",
+        }
+      }
       console.log(code);
       return item;
     });
