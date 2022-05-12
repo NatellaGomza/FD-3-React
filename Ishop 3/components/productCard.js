@@ -13,6 +13,8 @@ class ProductCard extends React.Component {
         availableAmmount: PropTypes.number.isRequired,
         workMode: PropTypes.number.isRequired,
         cbRefreshInfo: PropTypes.func,
+        cbBeginEditing: PropTypes.func,
+        beginEditing: PropTypes.bool,
     };
 
     state = {
@@ -38,11 +40,13 @@ class ProductCard extends React.Component {
     }
 
     isValidForm = () => {
-        if (  !this.state.isValidProduct.isValidName || !this.state.isValidProduct.isValidUrl || !this.state.isValidProduct.isValidPrice || !this.state.isValidProduct.isValidQuantity) {
-            this.setState({isFormValid: false})
+        if (!this.state.isValidProduct.isValidName || !this.state.isValidProduct.isValidUrl || !this.state.isValidProduct.isValidPrice || !this.state.isValidProduct.isValidQuantity) {
+            this.setState({ isFormValid: false })
         } else {
             this.setState({ isFormValid: true })
         }
+
+        this.props.cbBeginEditing();
     }
 
     itemNameChanged = (event) => {
@@ -51,7 +55,7 @@ class ProductCard extends React.Component {
         } else {
             this.state.isValidProduct.isValidName = true;
         }
-
+        console.log(this.props.beginEditing)
         this.isValidForm();
     }
 

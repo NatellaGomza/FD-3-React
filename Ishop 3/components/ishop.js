@@ -36,6 +36,7 @@ class IShop extends React.Component {
     }),
     workMode: this.props.startWorkMode,
     cbWorkMode: this.changeWorkMode,
+    beginEditing: false,
   }
 
   selectItem = (code) => {
@@ -88,7 +89,7 @@ class IShop extends React.Component {
     }
   }
 
-  changeWorkMode = (code) => {
+  changeWorkMode = (code, event) => {
     let editedItemList = this.state.productsList.map(function (el) {
       let item = { ...el };
       item.itemToBeChanged = code;
@@ -104,8 +105,13 @@ class IShop extends React.Component {
       console.log(code);
       return item;
     });
-    console.log(editedItemList);
-    this.setState({ productsList: editedItemList, workMode: 2 });
+    console.log(event)
+    if (event === 'button') {
+      this.setState({ productsList: editedItemList, workMode: 2 });
+    }
+    if (event !== 'button' && this.state.workMode === 2) {
+      this.setState({ productsList: editedItemList, workMode: 1 });
+    }
   }
 
   refreshInfo = (name, price, url, quantity, code) => {
@@ -120,7 +126,12 @@ class IShop extends React.Component {
 
       return item;
     })
-    this.setState({ productsList: itemEditedName,  workMode: 1 })
+    this.setState({ productsList: itemEditedName, workMode: 1 })
+  }
+
+  beginEditing = () => {
+    console.log('fdgfgh');
+    this.setState({ beginEditing: true });
   }
 
   render() {
@@ -138,6 +149,8 @@ class IShop extends React.Component {
         color={el.color}
         workMode={this.state.workMode}
         cbWorkMode={this.changeWorkMode}
+        cbBeginEditing={this.beginEditing}
+        beginEditing={this.state.beginEditing}
       />
     );
 
@@ -154,6 +167,8 @@ class IShop extends React.Component {
             availableAmmount={el.availableAmmount}
             workMode={this.state.workMode}
             cbRefreshInfo={this.refreshInfo}
+            cbBeginEditing={this.beginEditing}
+            beginEditing={this.state.beginEditing}
           />
         }
       })
@@ -189,7 +204,7 @@ class IShop extends React.Component {
             <tbody>{initProductList}</tbody>
           </table>
         </div>
-        <div>  <input type="button" value="New Product" disabled={this.state.workMode === 2} ></input> </div>
+        <div>  <input type="button" value="New Product" disabled={this.state.beginEditing === true} ></input> </div>
         <div className='productCard'>{initProduct}</div>
       </div>
     );

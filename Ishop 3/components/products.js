@@ -16,12 +16,18 @@ class Products extends React.Component {
     selectedItemCode: PropTypes.number,
     color: PropTypes.object.isRequired,
     workMode: PropTypes.number.isRequired,
-    cbWorkMode:  PropTypes.func,
+    cbWorkMode: PropTypes.func,
+    cbBeginEditing: PropTypes.func,
+    beginEditing: PropTypes.bool.isRequired
   };
 
   productChoosen = (event) => {
-    if (event.target.value !== 'Delete' && event.target.value !== 'Edit') {
-      this.props.cbSelected(this.props.code);
+    console.log(event.target.name)
+    if (this.props.beginEditing === false) {
+      if (event.target.name !== "button") {
+        this.props.cbSelected(this.props.code);
+      }
+      this.changeWorkMode(event);
     }
   }
 
@@ -30,9 +36,7 @@ class Products extends React.Component {
   }
 
   changeWorkMode = (event) => {
-    if (event.target.value === 'Edit') {
-    this.props.cbWorkMode(this.props.code);
-    };
+    this.props.cbWorkMode(this.props.code, event.target.name);
   }
 
   render() {
@@ -45,8 +49,8 @@ class Products extends React.Component {
         </td>
         <td className="availableAmmount">{this.props.availableAmmount}</td>
         <td className="button">
-          <input type="button" value="Edit" disabled = {this.props.workMode === 2} onClick={this.changeWorkMode}></input>
-          <input type="button" value="Delete" disabled = {this.props.workMode === 2} onClick={this.productForDelete}></input>
+          <input type="button" name="button" value="Edit" disabled={this.props.beginEditing === true} onClick={this.changeWorkMode}></input>
+          <input type="button" name="button" value="Delete" disabled={this.props.beginEditing === true} onClick={this.productForDelete}></input>
         </td>
       </tr>
     );
