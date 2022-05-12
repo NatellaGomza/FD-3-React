@@ -19,7 +19,7 @@ class IShop extends React.Component {
         availableAmmount: PropTypes.number.isRequired,
       })
     ),
-    startWorkMode: PropTypes.number.isRequired,
+    startWorkMode: PropTypes.string.isRequired,
   };
 
   state = {
@@ -46,8 +46,8 @@ class IShop extends React.Component {
 
       return item;
     });
-
-    if (this.state.workMode === 1) {
+    
+    if (this.state.workMode === 'init') {
       return this.setState({ productsList: selectedItemList }), this.changeColor(code);
     } else {
       return this.setState({ productsList: selectedItemList })
@@ -102,15 +102,13 @@ class IShop extends React.Component {
           backgroundColor: "white",
         }
       }
-      console.log(code);
       return item;
     });
-    console.log(event)
+
     if (event === 'button') {
-      this.setState({ productsList: editedItemList, workMode: 2 });
-    }
-    if (event !== 'button' && this.state.workMode === 2) {
-      this.setState({ productsList: editedItemList, workMode: 1 });
+      this.setState({ productsList: editedItemList, workMode: 'edit' });
+    } else {
+      this.setState({ productsList: editedItemList, workMode: 'card' });
     }
   }
 
@@ -126,16 +124,22 @@ class IShop extends React.Component {
 
       return item;
     })
-    this.setState({ productsList: itemEditedName, workMode: 1 })
+    
+    this.setState({ productsList: itemEditedName, workMode: 'init' });
   }
 
-  beginEditing = () => {
-    console.log('fdgfgh');
-    this.setState({ beginEditing: true });
+  beginEditing = (event) => {
+    event === 'submit' ? this.setState({ beginEditing: false }) : this.setState({ beginEditing: true });
+    if (event === 'Cancel') {
+      this.setState({ beginEditing: false, workMode: 'init' });
+    }
+  }
+
+  addNewProduct = () => {
+    this.setState( {workMode: 'new'} );
   }
 
   render() {
-
     var initProductList = this.state.productsList.map(el =>
       <Products key={el.code}
         code={el.code}
@@ -156,7 +160,7 @@ class IShop extends React.Component {
 
     var initProduct;
 
-    if (this.state.workMode === 2) {
+    if (this.state.workMode === 'edit' || this.state.workMode === 'new') {
       initProduct = this.state.productsList.map((el) => {
         if (el.itemToBeChanged === el.code) {
           return <ProductCard key={el.code}
@@ -166,13 +170,14 @@ class IShop extends React.Component {
             photo={el.urlPhoto}
             availableAmmount={el.availableAmmount}
             workMode={this.state.workMode}
+            cbWorkMode={this.changeWorkMode}
             cbRefreshInfo={this.refreshInfo}
             cbBeginEditing={this.beginEditing}
             beginEditing={this.state.beginEditing}
           />
         }
       })
-    } else {
+    } else if (this.state.workMode === 'card') {
       initProduct = this.state.productsList.map((el) => {
         if (el.selectedItemCode === el.code) {
           return <ProductCard key={el.code}
@@ -185,7 +190,7 @@ class IShop extends React.Component {
           />
         }
       });
-    }
+    } 
 
     return (
       <div className='page'>
@@ -204,7 +209,7 @@ class IShop extends React.Component {
             <tbody>{initProductList}</tbody>
           </table>
         </div>
-        <div>  <input type="button" value="New Product" disabled={this.state.beginEditing === true} ></input> </div>
+        <div>  <input type="button" value="New Product" onClick={this.addNewProduct} disabled={this.state.beginEditing === true} ></input> </div>
         <div className='productCard'>{initProduct}</div>
       </div>
     );

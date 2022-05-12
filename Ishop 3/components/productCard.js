@@ -11,7 +11,8 @@ class ProductCard extends React.Component {
         price: PropTypes.number.isRequired,
         photo: PropTypes.string.isRequired,
         availableAmmount: PropTypes.number.isRequired,
-        workMode: PropTypes.number.isRequired,
+        workMode: PropTypes.string.isRequired,
+        cbWorkMode: PropTypes.func,
         cbRefreshInfo: PropTypes.func,
         cbBeginEditing: PropTypes.func,
         beginEditing: PropTypes.bool,
@@ -29,14 +30,20 @@ class ProductCard extends React.Component {
 
     refreshInfo = (event) => {
         event.preventDefault();
+        
 
         let name = event.target.name.value;
         let price = +event.target.price.value;
         let url = event.target.url.value;
         let quantity = +event.target.quantity.value;
 
-        this.props.cbRefreshInfo(name, price, url, quantity, this.props.code)
+        this.props.cbRefreshInfo(name, price, url, quantity, this.props.code);
+        this.props.cbBeginEditing(event.type);
+    }
 
+    cancelChanges =(event) => {
+        console.log(event.target.value);
+        this.props.cbBeginEditing(event.target.value);
     }
 
     isValidForm = () => {
@@ -90,7 +97,7 @@ class ProductCard extends React.Component {
     }
 
     render() {
-        if (this.props.workMode === 2) {
+        if (this.props.workMode === 'edit') {
             return (
                 <div className='editBlock'>
                     <span> Edit Existing Product</span>
@@ -116,11 +123,11 @@ class ProductCard extends React.Component {
                             {(!this.state.isValidProduct.isValidQuantity) && <span> Please, fill the field. Field should be a number </span>}
                         </div>
                         <input type="submit" value="Save" disabled={this.state.isFormValid === false} />
-                        <input type="button" value="Cancel" />
+                        <input type="button" value="Cancel" onClick={this.cancelChanges}/>
                     </form>
                 </div>
             );
-        } else {
+        } else if (this.props.workMode === 'card') {
             return (
                 <div className='productCard'>
                     <div className='productInfo'>
@@ -129,6 +136,36 @@ class ProductCard extends React.Component {
                         <div> {this.props.availableAmmount} </div>
                     </div>
                     <div> <img src={this.props.photo} /> </div>
+                </div>
+            );
+        } else if (this.props.workMode === 'new') {
+            return (
+                <div className='editBlock'>
+                    <span> Add New Product</span>
+                    <form method="post" id="form" onSubmit={this.refreshInfo}>
+                        <div>
+                            <span> Name </span>
+                            <input type="text" name="name" onChange={this.itemNameChanged} />
+                            {(!this.state.isValidProduct.isValidName) && <span> Please, fill the field </span>}
+                        </div>
+                        <div>
+                            <span> Price </span>
+                            <input type="text" name="price" onChange={this.itemPriceChanged} />
+                            {(!this.state.isValidProduct.isValidPrice) && <span> Please, fill the field. Field should be a number </span>}
+                        </div>
+                        <div>
+                            <span> URL </span>
+                            <input type="text" name="url" onChange={this.itemUrlChahged} />
+                            {(!this.state.isValidProduct.isValidUrl) && <span> Please, fill the field </span>}
+                        </div>
+                        <div>
+                            <span> Quantity </span>
+                            <input type="text" name="quantity" onChange={this.itemQuantityChanged} />
+                            {(!this.state.isValidProduct.isValidQuantity) && <span> Please, fill the field. Field should be a number </span>}
+                        </div>
+                        <input type="submit" value="Add" disabled={this.state.isFormValid === false} />
+                        <input type="button" value="Cancel" onClick={this.cancelChanges}/>
+                    </form>
                 </div>
             );
         }

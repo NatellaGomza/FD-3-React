@@ -15,20 +15,19 @@ class Products extends React.Component {
     cbDelete: PropTypes.func,
     selectedItemCode: PropTypes.number,
     color: PropTypes.object.isRequired,
-    workMode: PropTypes.number.isRequired,
+    workMode: PropTypes.string.isRequired,
     cbWorkMode: PropTypes.func,
     cbBeginEditing: PropTypes.func,
     beginEditing: PropTypes.bool.isRequired
   };
 
   productChoosen = (event) => {
-    console.log(event.target.name)
-    if (this.props.beginEditing === false) {
-      if (event.target.name !== "button") {
+    console.log(event.target.name)   
+      if (event.target.name !== "button" && this.props.beginEditing === false) {
         this.props.cbSelected(this.props.code);
-      }
-      this.changeWorkMode(event);
-    }
+        this.changeWorkMode(event);
+        console.log("delete")
+      }      
   }
 
   productForDelete = () => {
