@@ -113,7 +113,7 @@ class ProductCard extends React.Component {
                         </div>
                         <div>
                             <span> URL </span>
-                            <input type="text" name="url" defaultValue={this.props.photo} onChange={this.itemUrlChahged} />
+                            <input type="url" name="url" defaultValue={this.props.photo} onChange={this.itemUrlChahged} />
                             {(!this.state.isValidProduct.isValidUrl) && <span> Please, fill the field </span>}
                         </div>
                         <div>

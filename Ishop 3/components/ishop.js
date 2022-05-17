@@ -25,10 +25,7 @@ class IShop extends React.Component {
   state = {
     productsList: this.props.products.map((el) => {
       let item = { ...el };
-      item.cbSelected = this.selectItem;
-      item.cbDelete = this.deleteItem;
-      item.selectedItemCode = null;
-      item.itemToBeChanged = null;
+    
       item.color = {
         backgroundColor: "white"
       };
@@ -326,7 +323,7 @@ class IShop extends React.Component {
               </div>
               <div>
                 <span> URL </span>
-                <input type="text" name="url" onChange={this.itemUrlChahged} />
+                <input type="url" name="url" onChange={this.itemUrlChahged} />
                 {(!this.state.isValidProduct.isValidUrl) &&
                   <span> Please, fill the field </span>}
               </div>
