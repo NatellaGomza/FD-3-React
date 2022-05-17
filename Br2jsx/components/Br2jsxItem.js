@@ -9,7 +9,7 @@ class Br2jsxItem extends React.Component {
     for (var i = 0; i < receivedArr.length; i++) {
       if (i != receivedArr.length - 1) {
         result.push(receivedArr[i]);
-        result.push(<br />);
+        result.push(<br key = {i} />);
       } else {
         result.push(receivedArr[i]);
       }

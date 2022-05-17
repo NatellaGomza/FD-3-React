@@ -1,6 +1,8 @@
 ﻿﻿import React from 'react';
 import PropTypes from 'prop-types';
 
+import './Rainbow.css';
+
 import RainbowFrame from './RainbowFrame';
 
 class Rainbow extends React.Component {
