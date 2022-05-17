@@ -1,0 +1,10 @@
+.result {
+  display:inline-block;
+  background-color: rgb(34, 125, 72);
+  color:white;
+  width: 100px;
+}
+
+#container {
+  text-align: center;
+}
