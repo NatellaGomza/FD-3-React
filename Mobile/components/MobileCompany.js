@@ -2,6 +2,7 @@
 import PropTypes from 'prop-types';
 
 import MobileClient from './MobileClient';
+import NewClient from './NewClient';
 
 import './MobileCompany.css';
 
@@ -23,6 +24,7 @@ class MobileCompany extends React.PureComponent {
   state = {
     name: this.props.name,
     clients: this.props.clients,
+    newClient: [],
     adding: false,
   };
 
@@ -64,20 +66,17 @@ class MobileCompany extends React.PureComponent {
   }
 
   addNewClient = () => {
+    let newUser = {};
+    newUser.id = Math.ceil(Math.random() * 100);
+    newUser.fam = "Фамилия";
+    newUser.im = "Имя";
+    newUser.otch = "Отчество";
+    newUser.balance = 0;
+    let newUsers = [...this.state.newClient, newUser];
 
-    // let newUser = {};
-    // newUser.id = Math.random*100;
-    // newUser.fam = "Фамилия";
-    // newUser.im = "Имя";
-    // newUser.otch = "Отчество";
-    // newUser.balanse = "Баланс";
-
-    // let activeUsers = [...this.props.clients, newUser];
-
-    // this.setState({clients:activeUsers});
-    // console.log(this.state.clients);
-
-    this.setState({adding:true});
+    this.setState({ newClient: newUsers, adding: true });
+    console.log(newUsers);
+    console.log(this.state.newClient);
 
   }
 
@@ -89,6 +88,11 @@ class MobileCompany extends React.PureComponent {
       let FIO = { fam: client.fam, im: client.im, otch: client.otch };
       return <MobileClient key={client.id} id={client.id} FIO={FIO} balance={client.balance} />;
     });
+
+    var newClient = this.state.newClient.map(client => {
+      let newClient = { fam: client.fam, im: client.im, otch: client.otch };
+      return <NewClient key={client.id} id={client.id} FIO={newClient} balance={client.balance}/>
+    })
 
     return (
       <div>
@@ -116,22 +120,7 @@ class MobileCompany extends React.PureComponent {
               </tr>
             </thead>
             <tbody className='MobileCompanyClients'>{clientsCode}</tbody>
-            <tfoot>
-              <tr className={!this.state.adding ? 'None' : ''} >
-                <td>
-                  <input type='text' name="surname" defaultValue="Фамилия"></input>
-                </td>
-                <td>
-                  <input type='text' name="name" defaultValue="Имя"></input>
-                </td>
-                <td>
-                  <input type='text' name="patronymic" defaultValue="Отчество"></input>
-                </td>
-                <td>
-                  <input type='text' name="balance" defaultValue="Баланс"></input>
-                </td>
-              </tr>
-            </tfoot>
+            <tfoot>{newClient}</tfoot>
           </table>
         </div>
         <input type="button" value="Добавить" onClick={this.addNewClient} />
