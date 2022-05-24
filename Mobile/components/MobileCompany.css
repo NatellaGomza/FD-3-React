@@ -1,0 +1,22 @@
+﻿.MobileCompany, .Filter
+{
+  border: 1px solid rgb(143, 75, 143);
+  width: 290px;
+  padding: 3px 7px;
+  background-color: rgb(241, 155, 201);
+  margin:5px;
+}
+
+.MobileCompanyName
+{
+  font-weight: bold;
+}
+
+.MobileCompanyClients
+{
+  padding-top: 5px;
+}
+
+input {
+  margin:5px;
+}

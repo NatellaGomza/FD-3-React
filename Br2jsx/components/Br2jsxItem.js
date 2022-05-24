@@ -7,9 +7,10 @@ class Br2jsxItem extends React.Component {
     var receivedArr = this.props.text.split(/\<.*?\>/);
     var result = [];
     for (var i = 0; i < receivedArr.length; i++) {
-      if (i != receivedArr.length - 1) {
-        result.push(receivedArr[i]);
+      if (i) {
         result.push(<br key = {i} />);
+        result.push(receivedArr[i]);
+       
       } else {
         result.push(receivedArr[i]);
       }

@@ -1,0 +1,37 @@
+﻿.table {
+  border-collapse: collapse;
+  margin:5px;
+}
+
+span {
+  margin:5px;
+  width: 120px;
+}
+
+td {
+  border: 2px solid rgb(155, 56, 155);
+ 
+}
+
+thead {
+  background-color: rgb(241, 155, 201);
+  font-weight: bold;
+}
+
+.MobileClientEdit {
+  width: 120px;
+  text-align: center;
+}
+
+input[type='text'] {
+  padding:0px;
+  width:100px;
+}
+
+.Visible {
+  display:inline-block;
+}
+
+.None {
+  display: none;
+}
