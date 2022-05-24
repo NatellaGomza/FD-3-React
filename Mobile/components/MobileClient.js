@@ -91,18 +91,18 @@ class MobileClient extends React.PureComponent {
     console.log("MobileClient id=" + this.props.id + " render");
 
     return (
-      <tr className="productsTable" style={{ display: this.state.delete ? 'none' : ''}}>
+      <tr style={{ display: this.state.delete ? 'none' : ''}}>
         <td className='MobileClientFIO'>
           <span className={this.state.edit ? 'None' : 'Visible'}>{this.state.FIO.fam}</span>
-          <input className={this.state.edit ? 'Visible' : 'None'} type='text' defaultValue={this.state.FIO.fam} ref={this.setNewClientFam} name="name"></input>
+          <input className={this.state.edit ? 'Visible' : 'None'} type='text' defaultValue={this.state.FIO.fam} ref={this.setNewClientFam} name="surname"></input>
         </td>
         <td className='MobileClientFIO'>
           <span className={this.state.edit ? 'None' : 'Visible'}>{this.state.FIO.im}</span>
-          <input className={this.state.edit ? 'Visible' : 'None'} type='text' defaultValue={this.state.FIO.im} ref={this.setNewClientIm} name="fio"></input>
+          <input className={this.state.edit ? 'Visible' : 'None'} type='text' defaultValue={this.state.FIO.im} ref={this.setNewClientIm} name="name"></input>
         </td>
         <td className='MobileClientFIO'>
           <span className={this.state.edit ? 'None' : 'Visible'}>{this.state.FIO.otch}</span>
-          <input className={this.state.edit ? 'Visible' : 'None'} type='text' defaultValue={this.state.FIO.otch} ref={this.setNewClientOtch} name="otch"></input>
+          <input className={this.state.edit ? 'Visible' : 'None'} type='text' defaultValue={this.state.FIO.otch} ref={this.setNewClientOtch} name="patronymic"></input>
         </td>
         <td >
           <span className={this.state.edit ? 'None' : 'Visible'}>{this.state.balance}</span>

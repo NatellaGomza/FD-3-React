@@ -23,7 +23,9 @@ class MobileCompany extends React.PureComponent {
   state = {
     name: this.props.name,
     clients: this.props.clients,
+    adding: false,
   };
+
 
   setName1 = () => {
     this.setState({ name: 'МТС' });
@@ -33,28 +35,51 @@ class MobileCompany extends React.PureComponent {
     this.setState({ name: 'Velcom' });
   };
 
-  setBalance = (clientId, newBalance) => {
-    let changed = false;
-    let newClients = [...this.state.clients]; // копия самого массива клиентов
-    newClients.forEach((c, i) => {
-      if (c.id == clientId && c.balance != newBalance) {
-        let newClient = { ...c }; // копия хэша изменившегося клиента
-        newClient.balance = newBalance;
-        newClients[i] = newClient;
-        changed = true;
+  showActiveUsers = () => {
+    let activeUsers = [];
+    let arrayFromActiveUsers = this.props.clients.map((el) => {
+      let user = { ...el };
+      if (user.balance > 0) {
+        activeUsers.push(user);
       }
-    });
-    if (changed)
-      this.setState({ clients: newClients });
-  };
+    })
 
-  setBalance1 = () => {
-    this.setBalance(105, 230);
-  };
+    this.setState({ clients: activeUsers });
+  }
 
-  setBalance2 = () => {
-    this.setBalance(105, 250);
-  };
+  showBlockedUsers = () => {
+    let blockedUsers = [];
+    let arrayFromBlockedUsers = this.props.clients.map((el) => {
+      let user = { ...el };
+      if (user.balance <= 0) {
+        blockedUsers.push(user);
+      }
+    })
+
+    this.setState({ clients: blockedUsers });
+  }
+
+  showAllUsers = () => {
+    this.setState({ clients: this.props.clients });
+  }
+
+  addNewClient = () => {
+
+    // let newUser = {};
+    // newUser.id = Math.random*100;
+    // newUser.fam = "Фамилия";
+    // newUser.im = "Имя";
+    // newUser.otch = "Отчество";
+    // newUser.balanse = "Баланс";
+
+    // let activeUsers = [...this.props.clients, newUser];
+
+    // this.setState({clients:activeUsers});
+    // console.log(this.state.clients);
+
+    this.setState({adding:true});
+
+  }
 
   render() {
 
@@ -63,8 +88,7 @@ class MobileCompany extends React.PureComponent {
     var clientsCode = this.state.clients.map(client => {
       let FIO = { fam: client.fam, im: client.im, otch: client.otch };
       return <MobileClient key={client.id} id={client.id} FIO={FIO} balance={client.balance} />;
-    }
-    );
+    });
 
     return (
       <div>
@@ -74,12 +98,12 @@ class MobileCompany extends React.PureComponent {
           <div className='MobileCompanyName'>Компания &laquo;{this.state.name}&raquo;</div>
         </div>
         <div className="Filter">
-          <input type="button" value="Все" onClick={this.setName1} />
-          <input type="button" value="Активные" onClick={this.setName2} />
-          <input type="button" value="Заблокированные" onClick={this.setName1} />
+          <input type="button" value="Все" onClick={this.showAllUsers} />
+          <input type="button" value="Активные" onClick={this.showActiveUsers} />
+          <input type="button" value="Заблокированные" onClick={this.showBlockedUsers} />
         </div>
         <div className="ClientsHeader">
-        <table className='table'>
+          <table className='table'>
             <thead>
               <tr className='tableHeader'>
                 <td>Фамилия</td>
@@ -92,9 +116,26 @@ class MobileCompany extends React.PureComponent {
               </tr>
             </thead>
             <tbody className='MobileCompanyClients'>{clientsCode}</tbody>
+            <tfoot>
+              <tr className={!this.state.adding ? 'None' : ''} >
+                <td>
+                  <input type='text' name="surname" defaultValue="Фамилия"></input>
+                </td>
+                <td>
+                  <input type='text' name="name" defaultValue="Имя"></input>
+                </td>
+                <td>
+                  <input type='text' name="patronymic" defaultValue="Отчество"></input>
+                </td>
+                <td>
+                  <input type='text' name="balance" defaultValue="Баланс"></input>
+                </td>
+              </tr>
+            </tfoot>
           </table>
         </div>
-        <input type="button" value="Добавить" onClick={this.setBalance1} />
+        <input type="button" value="Добавить" onClick={this.addNewClient} />
+        <input type="button" className={!this.state.adding ? 'None' : 'Visible'} value="Сохранить" onClick={this.addNewClient} />
       </div>
     );
 
