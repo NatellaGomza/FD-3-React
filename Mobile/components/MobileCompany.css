@@ -1,26 +1,41 @@
-﻿.MobileCompany, .Filter
-{
+﻿* {
+  box-sizing: border-box;
+}
+
+.MobileCompany,
+.Filter {
   border: 1px solid rgb(143, 75, 143);
   width: 290px;
   padding: 3px 7px;
   background-color: rgb(241, 155, 201);
-  margin:5px;
+  margin: 5px;
 }
 
-.MobileCompanyName
-{
+.MobileCompanyName {
   font-weight: bold;
 }
 
-.MobileCompanyClients
-{
+.MobileCompanyClients {
   padding-top: 5px;
 }
 
 input {
-  margin:5px;
+  margin: 5px;
 }
 
 tfoot {
   height: 35px;
+}
+
+.cell {
+  display: inline-block;
+  width: 134px;
+  border-color: rgb(143, 75, 143);
+  border-style: solid;
+  border-width: 2px 2px 2px 1px;
+}
+
+.cell:first-of-type {
+  margin-left: 5px;
+  border-width: 2px 2px 2px 2px;
 }

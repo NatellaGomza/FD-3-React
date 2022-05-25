@@ -2,28 +2,29 @@
 import PropTypes from 'prop-types';
 
 import './MobileClient.css';
+import { clientEvents } from './events';
 
 class MobileClient extends React.PureComponent {
 
   static propTypes = {
-    id: PropTypes.number.isRequired,
-    FIO: PropTypes.shape({
+
+    client: PropTypes.shape({
       fam: PropTypes.string.isRequired,
       im: PropTypes.string.isRequired,
       otch: PropTypes.string.isRequired,
+      balance: PropTypes.number.isRequired,
+      id: PropTypes.number.isRequired,
     }),
-    balance: PropTypes.number.isRequired,
+
   };
 
   state = {
-    FIO: this.props.FIO,
-    balance: this.props.balance,
     edit: false,
-    delete : false,
+    delete: false,
   };
 
   componentWillReceiveProps = (newProps) => {
-     this.setState({ FIO: newProps.FIO, balance: newProps.balance });
+    this.setState({ FIO: newProps.FIO, balance: newProps.balance });
   };
 
   beginEditing = () => {
@@ -36,28 +37,28 @@ class MobileClient extends React.PureComponent {
   newClientBalance = null;
 
   setNewClientBalance = (ref) => {
-    console.log(ref);
     this.newClientBalance = ref;
   };
 
   setNewClientFam = (ref) => {
-    console.log(ref);
     this.newClientFam = ref;
   };
 
   setNewClientIm = (ref) => {
-    console.log(ref);
     this.newClientIm = ref;
   }
 
   setNewClientOtch = (ref) => {
-    console.log(ref);
     this.newClientOtch = ref;
   }
 
-  setNewClient = () => {
+  changeClient = () => {
+    let newClient = { ...this.props.client };
 
-    let newClient = {...this.state.FIO};
+    if (this.newClientBalance) {
+      let newBalance = this.newClientBalance.value;
+      newClient.balance = +newBalance;
+    }
 
     if (this.newClientFam) {
       let newFam = this.newClientFam.value;
@@ -74,16 +75,16 @@ class MobileClient extends React.PureComponent {
       newClient.otch = newOtch;
     }
 
-    if (this.newClientBalance) {
-      let newBalance = this.newClientBalance.value;
-      this.setState({ balance: newBalance });
-    }
-
-    this.setState({ FIO: newClient, edit: false });
+    this.setState({ edit: false });
+    clientEvents.emit('newClienList', newClient);
   };
 
+// должны ли функции называться одинаково у родителя и ребенка?
   deleteClient = () => {
-    this.setState({ delete: true });
+    
+    let deletedClient = this.props.client;
+    console.log(deletedClient);
+    clientEvents.emit('deleteClient', deletedClient);
   }
 
   render() {
@@ -91,27 +92,27 @@ class MobileClient extends React.PureComponent {
     console.log("MobileClient id=" + this.props.id + " render");
 
     return (
-      <tr style={{ display: this.state.delete ? 'none' : ''}}>
+      <tr style={{ display: this.state.delete ? 'none' : '' }}>
         <td className='MobileClientFIO'>
-          <span className={this.state.edit ? 'None' : 'Visible'}>{this.state.FIO.fam}</span>
-          <input className={this.state.edit ? 'Visible' : 'None'} type='text' defaultValue={this.state.FIO.fam} ref={this.setNewClientFam} name="surname"></input>
+          <span className={this.state.edit ? 'None' : 'Visible'}>{this.props.client.fam}</span>
+          <input className={this.state.edit ? 'Visible' : 'None'} type='text' defaultValue={this.props.client.fam} ref={this.setNewClientFam} name="surname"></input>
         </td>
         <td className='MobileClientFIO'>
-          <span className={this.state.edit ? 'None' : 'Visible'}>{this.state.FIO.im}</span>
-          <input className={this.state.edit ? 'Visible' : 'None'} type='text' defaultValue={this.state.FIO.im} ref={this.setNewClientIm} name="name"></input>
+          <span className={this.state.edit ? 'None' : 'Visible'}>{this.props.client.im}</span>
+          <input className={this.state.edit ? 'Visible' : 'None'} type='text' defaultValue={this.props.client.im} ref={this.setNewClientIm} name="name"></input>
         </td>
         <td className='MobileClientFIO'>
-          <span className={this.state.edit ? 'None' : 'Visible'}>{this.state.FIO.otch}</span>
-          <input className={this.state.edit ? 'Visible' : 'None'} type='text' defaultValue={this.state.FIO.otch} ref={this.setNewClientOtch} name="patronymic"></input>
+          <span className={this.state.edit ? 'None' : 'Visible'}>{this.props.client.otch}</span>
+          <input className={this.state.edit ? 'Visible' : 'None'} type='text' defaultValue={this.props.client.otch} ref={this.setNewClientOtch} name="patronymic"></input>
         </td>
         <td >
-          <span className={this.state.edit ? 'None' : 'Visible'}>{this.state.balance}</span>
-          <input className={this.state.edit ? 'Visible' : 'None'} type='text' defaultValue={this.state.balance} ref={this.setNewClientBalance} name="balance"></input>
+          <span className={this.state.edit ? 'None' : 'Visible'}>{this.props.client.balance}</span>
+          <input className={this.state.edit ? 'Visible' : 'None'} type='text' defaultValue={this.props.client.balance} ref={this.setNewClientBalance} name="balance"></input>
         </td>
-        <td style={{ backgroundColor: this.state.balance > 0 ? 'rgb(7, 243, 7)' : 'rgb(253, 98, 98)' }}>{this.state.balance > 0 ? 'active' : 'blocked'}</td>
+        <td style={{ backgroundColor: this.props.client.balance > 0 ? 'rgb(7, 243, 7)' : 'rgb(253, 98, 98)' }}>{this.props.client.balance > 0 ? 'active' : 'blocked'}</td>
         <td className="button">
           <input className={this.state.edit ? 'None' : 'Visible'} type="button" name="button" value="Редактировать" onClick={this.beginEditing}></input>
-          <input className={this.state.edit ? 'Visible' : 'None'} type="button" name="button" value="Сохранить" onClick={this.setNewClient}></input>
+          <input className={this.state.edit ? 'Visible' : 'None'} type="button" name="button" value="Сохранить" onClick={this.changeClient}></input>
         </td>
         <td className="button">
           <input type="button" name="button" value="Удалить" disabled={this.props.beginEditing === true} onClick={this.deleteClient}></input>
