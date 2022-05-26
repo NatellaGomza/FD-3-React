@@ -46,23 +46,10 @@ class MobileCompany extends React.PureComponent {
         let changedClient = {...el};
         changedClient = newClient; 
         changedClientList[i] = changedClient;
-        console.log( changedClient);
       }
     })
 
-    this.setState({ clients: changedClient });
-
-    // let changedArr = [];
-
-    // for (let i = 0; i < this.state.clients.length; i++) {
-    //   if (this.state.clients[i].id === newClient.id) {
-    //     this.state.clients[i] = newClient;
-    //   }
-
-    //   changedArr.push(this.state.clients[i]);
-    // }
-
-    // this.setState({ clients: changedArr });
+    this.setState({ clients: changedClientList });
   }
 
   deleteClient = (deletedClient) => {
@@ -112,7 +99,6 @@ class MobileCompany extends React.PureComponent {
     console.log("MobileCompany render");
 
     let usersForRendering = [];
-    let allClients = [];
     let blockedClients = [];
     let activeClients = [];
 
@@ -183,9 +169,7 @@ class MobileCompany extends React.PureComponent {
         <input type="button" value="Добавить" onClick={this.addNewClient} />
       </div>
     );
-
   }
-
 }
 
 export default MobileCompany;

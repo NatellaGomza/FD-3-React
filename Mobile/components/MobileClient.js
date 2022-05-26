@@ -90,7 +90,7 @@ class MobileClient extends React.PureComponent {
 
   render() {
 
-    console.log("MobileClient id=" + this.props.id + " render");
+    console.log("MobileClient render");
 
     return (
       <tr style={{ display: this.state.delete ? 'none' : '' }}>
