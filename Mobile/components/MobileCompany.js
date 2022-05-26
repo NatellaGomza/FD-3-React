@@ -25,6 +25,7 @@ class MobileCompany extends React.PureComponent {
     name: this.props.name,
     clients: this.props.clients,
     adding: false,
+    view: "all",
   };
 
   componentDidMount = () => {
@@ -38,17 +39,29 @@ class MobileCompany extends React.PureComponent {
   };
 
   changeClient = (newClient) => {
-    let changedArr = [];
 
-    for (let i = 0; i < this.state.clients.length; i++) {
-      if (this.state.clients[i].id === newClient.id) {
-        this.state.clients[i] = newClient;
+    let changedClientList = [...this.state.clients];
+    changedClientList.forEach((el, i) => {
+      if (el.id === newClient.id && JSON.stringify(el) != JSON.stringify(newClient)) {
+        let changedClient = {...el};
+        changedClient = newClient; 
+        changedClientList[i] = changedClient;
       }
+    })
 
-      changedArr.push(this.state.clients[i]);
-    }
+    this.setState({ clients: changedClientList });
 
-    this.setState({ clients: changedArr });
+    // let changedArr = [];
+
+    // for (let i = 0; i < this.state.clients.length; i++) {
+    //   if (this.state.clients[i].id === newClient.id) {
+    //     this.state.clients[i] = newClient;
+    //   }
+
+    //   changedArr.push(this.state.clients[i]);
+    // }
+
+    // this.setState({ clients: changedArr });
   }
 
   deleteClient = (deletedClient) => {
@@ -68,40 +81,26 @@ class MobileCompany extends React.PureComponent {
   };
 
   showActiveUsers = () => {
-    let activeUsers = [];
-    let arrayFromActiveUsers = this.state.clients.map((el) => {
-      let user = { ...el };
-      if (user.balance > 0) {
-        activeUsers.push(user);
-      }
-    })
-
-    this.setState({ clients: activeUsers });
+    this.setState({ view: "active" });
   }
 
   showBlockedUsers = () => {
-    let blockedUsers = [];
-    let arrayFromBlockedUsers = this.state.clients.map((el) => {
-      let user = { ...el };
-      if (user.balance <= 0) {
-        blockedUsers.push(user);
-      }
-    })
-
-    this.setState({ clients: blockedUsers });
+    this.setState({ view: "blocked" });
   }
 
   showAllUsers = () => {
-    this.setState({ clients: this.state.clients });
+    this.setState({ view: "all" });
   }
 
   addNewClient = () => {
     let newUser = {};
-    newUser.id = Math.ceil(Math.random() * 100);
+
     newUser.fam = "Фамилия";
     newUser.im = "Имя";
     newUser.otch = "Отчество";
     newUser.balance = 0;
+    newUser.id = Math.ceil(Math.random() * 100);
+
     let newUsers = [...this.state.clients, newUser];
 
     this.setState({ clients: newUsers, adding: true });
@@ -111,10 +110,48 @@ class MobileCompany extends React.PureComponent {
 
     console.log("MobileCompany render");
 
-    var clientsCode = this.state.clients.map(client => {
-      let FIO = { fam: client.fam, im: client.im, otch: client.otch, balance: client.balance, id: client.id };
-      return <MobileClient key={client.id} client={FIO} />;
-    });
+    let clientsCode;
+    let blockedUsers = [];
+    let activeUsers = [];
+
+    if (this.state.view === "all") {
+      clientsCode = this.state.clients.map(client => {
+        let FIO = { id: client.id, fam: client.fam, im: client.im, otch: client.otch, balance: client.balance };
+        return <MobileClient key={client.id} client={FIO} />;
+      });
+    }
+
+    if (this.state.view === "active") {
+      let arrayFromActiveUsers = [...this.state.clients];
+      arrayFromActiveUsers.forEach((el) => {
+        let user = { ...el };
+
+        if (user.balance > 0) {
+          activeUsers.push(user);
+        }
+      })
+
+      clientsCode = activeUsers.map(client => {
+        let FIO = { fam: client.fam, im: client.im, otch: client.otch, balance: client.balance, id: client.id };
+        return <MobileClient key={client.id} client={FIO} />;
+      });
+    }
+
+    if (this.state.view === "blocked") {
+      let arrayFromBlockedUsers = [...this.state.clients];
+      arrayFromBlockedUsers.forEach((el) => {
+        let user = { ...el };
+
+        if (user.balance <= 0) {
+          blockedUsers.push(user);
+        }
+      });
+
+      clientsCode = blockedUsers.map(client => {
+        let FIO = { fam: client.fam, im: client.im, otch: client.otch, balance: client.balance, id: client.id };
+        return <MobileClient key={client.id} client={FIO} />;
+      });
+    }
 
     return (
       <div>
