@@ -25,7 +25,6 @@ class MobileClient extends React.PureComponent {
   };
 
   componentWillReceiveProps = (newProps) => {
-    console.log(newProps);
     this.setState( {client: newProps.client} );
   };
 
