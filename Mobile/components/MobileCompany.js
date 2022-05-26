@@ -39,7 +39,7 @@ class MobileCompany extends React.PureComponent {
   };
 
   changeClient = (newClient) => {
-
+console.log(newClient);
     let changedClientList = [...this.state.clients];
     changedClientList.forEach((el, i) => {
       if (el.id === newClient.id && JSON.stringify(el) != JSON.stringify(newClient)) {

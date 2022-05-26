@@ -19,12 +19,14 @@ class MobileClient extends React.PureComponent {
   };
 
   state = {
+    client: this.props.client,
     edit: false,
     delete: false,
   };
 
   componentWillReceiveProps = (newProps) => {
-    this.setState({ FIO: newProps.FIO, balance: newProps.balance });
+    console.log(newProps);
+    this.setState( {client: newProps.client} );
   };
 
   beginEditing = () => {
@@ -94,22 +96,22 @@ class MobileClient extends React.PureComponent {
     return (
       <tr style={{ display: this.state.delete ? 'none' : '' }}>
         <td className='MobileClientFIO'>
-          <span className={this.state.edit ? 'None' : 'Visible'}>{this.props.client.fam}</span>
-          <input className={this.state.edit ? 'Visible' : 'None'} type='text' defaultValue={this.props.client.fam} ref={this.setNewClientFam} name="surname"></input>
+          <span className={this.state.edit ? 'None' : 'Visible'}>{this.state.client.fam}</span>
+          <input className={this.state.edit ? 'Visible' : 'None'} type='text' defaultValue={this.state.client.fam} ref={this.setNewClientFam} name="surname"></input>
         </td>
         <td className='MobileClientFIO'>
-          <span className={this.state.edit ? 'None' : 'Visible'}>{this.props.client.im}</span>
-          <input className={this.state.edit ? 'Visible' : 'None'} type='text' defaultValue={this.props.client.im} ref={this.setNewClientIm} name="name"></input>
+          <span className={this.state.edit ? 'None' : 'Visible'}>{this.state.client.im}</span>
+          <input className={this.state.edit ? 'Visible' : 'None'} type='text' defaultValue={this.state.client.im} ref={this.setNewClientIm} name="name"></input>
         </td>
         <td className='MobileClientFIO'>
-          <span className={this.state.edit ? 'None' : 'Visible'}>{this.props.client.otch}</span>
-          <input className={this.state.edit ? 'Visible' : 'None'} type='text' defaultValue={this.props.client.otch} ref={this.setNewClientOtch} name="patronymic"></input>
+          <span className={this.state.edit ? 'None' : 'Visible'}>{this.state.client.otch}</span>
+          <input className={this.state.edit ? 'Visible' : 'None'} type='text' defaultValue={this.state.client.otch} ref={this.setNewClientOtch} name="patronymic"></input>
         </td>
         <td >
-          <span className={this.state.edit ? 'None' : 'Visible'}>{this.props.client.balance}</span>
-          <input className={this.state.edit ? 'Visible' : 'None'} type='text' defaultValue={this.props.client.balance} ref={this.setNewClientBalance} name="balance"></input>
+          <span className={this.state.edit ? 'None' : 'Visible'}>{this.state.client.balance}</span>
+          <input className={this.state.edit ? 'Visible' : 'None'} type='text' defaultValue={this.state.client.balance} ref={this.setNewClientBalance} name="balance"></input>
         </td>
-        <td style={{ backgroundColor: this.props.client.balance > 0 ? 'rgb(7, 243, 7)' : 'rgb(253, 98, 98)' }}>{this.props.client.balance > 0 ? 'active' : 'blocked'}</td>
+        <td style={{ backgroundColor: this.props.client.balance > 0 ? 'rgb(7, 243, 7)' : 'rgb(253, 98, 98)' }}>{this.state.client.balance > 0 ? 'active' : 'blocked'}</td>
         <td className="button">
           <input className={this.state.edit ? 'None' : 'Visible'} type="button" name="button" value="Редактировать" onClick={this.beginEditing}></input>
           <input className={this.state.edit ? 'Visible' : 'None'} type="button" name="button" value="Сохранить" onClick={this.changeClient}></input>
