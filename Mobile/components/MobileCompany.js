@@ -111,10 +111,9 @@ class MobileCompany extends React.PureComponent {
     if (this.state.view === "active") {
       let arrayFromActiveUsers = [...this.state.clients];
       arrayFromActiveUsers.forEach((el) => {
-        let user = { ...el };
 
-        if (user.balance > 0) {
-          activeClients.push(user);
+        if (el.balance > 0) {
+          activeClients.push(el);
         }
       })
 
@@ -126,10 +125,9 @@ class MobileCompany extends React.PureComponent {
     if (this.state.view === "blocked") {
       let arrayFromBlockedUsers = [...this.state.clients];
       arrayFromBlockedUsers.forEach((el) => {
-        let user = { ...el };
 
-        if (user.balance <= 0) {
-          blockedClients.push(user);
+        if (el.balance <= 0) {
+          blockedClients.push(el);
         }
       });
 
